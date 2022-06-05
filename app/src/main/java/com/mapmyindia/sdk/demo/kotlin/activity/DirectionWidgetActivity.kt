@@ -1,9 +1,11 @@
 package com.mapmyindia.sdk.demo.kotlin.activity
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import com.google.gson.Gson
 import com.mapmyindia.sdk.demo.R
 import com.mapmyindia.sdk.demo.databinding.ActivityDirectionWidgetBinding
 import com.mapmyindia.sdk.demo.kotlin.settings.MapmyIndiaDirectionWidgetSetting
@@ -68,6 +70,11 @@ class DirectionWidgetActivity : AppCompatActivity() {
                 directionsResponse: DirectionsResponse,
                 i: Int
             ) {
+
+                Log.d("navigation_direction", Gson().toJson(directionPoint))
+                Log.d("navigation_direction1", Gson().toJson(directionPoint1))
+                Log.d("navigation_list", Gson().toJson(list))
+                Log.d("navigation_dr", Gson().toJson(directionsResponse))
                 Toast.makeText(
                     this@DirectionWidgetActivity,
                     "On Navigation Start",

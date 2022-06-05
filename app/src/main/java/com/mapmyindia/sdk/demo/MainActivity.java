@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
     private ActionBarDrawerToggle drawerToggle;
     private NavigationView navigationView;
     private Toolbar toolbar;
-    private Type selectedType = Type.JAVA;
+    private Type selectedType = Type.KOTLIN;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

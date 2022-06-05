@@ -3,11 +3,14 @@ package com.mapmyindia.sdk.demo.kotlin.activity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import com.google.gson.Gson
 import com.mapmyindia.sdk.demo.R
 import com.mapmyindia.sdk.demo.databinding.BaseLayoutBinding
 import com.mapmyindia.sdk.demo.java.plugin.TrackingPlugin
+import com.mapmyindia.sdk.demo.kotlin.adapter.StepsAdapter
 import com.mapmyindia.sdk.geojson.Point
 import com.mapmyindia.sdk.geojson.utils.PolylineUtils
 import com.mapmyindia.sdk.maps.MapmyIndiaMap
@@ -15,15 +18,19 @@ import com.mapmyindia.sdk.maps.OnMapReadyCallback
 import com.mapmyindia.sdk.maps.camera.CameraUpdateFactory
 import com.mapmyindia.sdk.maps.geometry.LatLng
 import com.mapmyindia.sdk.maps.geometry.LatLngBounds
+import com.mapmyindia.sdk.plugin.directions.DirectionsUtils
+import com.mapmyindia.sdk.plugin.directions.ManeuverUtils
 import com.mmi.services.api.OnResponseCallback
 import com.mmi.services.api.directions.DirectionsCriteria
 import com.mmi.services.api.directions.MapmyIndiaDirectionManager
 import com.mmi.services.api.directions.MapmyIndiaDirections
 import com.mmi.services.api.directions.models.DirectionsResponse
+import com.mmi.services.api.directions.models.LegStep
 import com.mmi.services.utils.Constants
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.text.DecimalFormat
 import java.util.*
 
 class TrackingActivity : AppCompatActivity(), OnMapReadyCallback {
@@ -143,6 +150,7 @@ class TrackingActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     private fun callTravelledRoute() {
+
         val direction = MapmyIndiaDirections.builder()
                 .origin(travelledPoints!![index])
                 .destination(Point.fromLngLat(72.9344, 19.1478))
@@ -153,6 +161,37 @@ class TrackingActivity : AppCompatActivity(), OnMapReadyCallback {
                 .build()
         MapmyIndiaDirectionManager.newInstance(direction).call(object: OnResponseCallback<DirectionsResponse> {
             override fun onSuccess(directionsResponse: DirectionsResponse?) {
+                if (directionsResponse != null) {
+//                    Log.d("steps_jeq1", "${Gson().toJson(directionsResponse.waypoints())}")
+
+                    val results = directionsResponse.routes()
+                    if (results.size ?: 0 > 0) {
+                        val routeLegList = results[0]?.legs()
+                        val legSteps: MutableList<LegStep> = ArrayList()
+                        for (routeLeg in routeLegList!!) {
+                            legSteps.addAll(routeLeg.steps()!!)
+                        }
+                        legSteps[0].let {  legStep->
+                            Log.d("steps_jeq1", DirectionsUtils.getTextInstructions(legStep))
+
+//                            holder.maneuverView.setManeuverTypeAndModifier(legSteps?.get(position)?.maneuver()?.type()!!, legSteps?.get(position)?.maneuver()?.modifier())
+//
+                            val type = legStep.maneuver().type()
+                            if (type != null) {
+//                                if (type.equals("roundabout", ignoreCase = true) || type.equals("rotary", ignoreCase = true)) {
+//                                    if (legSteps.size > index + 1) {
+//                                        holder.maneuverView.setRoundaboutAngle(ManeuverUtils.roundaboutAngle(legSteps[position], legSteps[position + 1]))
+//                                    } else {
+//                                        holder.maneuverView.setRoundaboutAngle(ManeuverUtils.roundaboutAngle(legSteps[position], legSteps[position]))
+//                                    }
+//                                }
+                            }
+                            Log.d("steps_jeq3",  "$type")
+                            Log.d("steps_jeq2",  convertMetersToText(legStep.distance()))
+//                            holder.distanceText.text = String.format("GO  %s",))
+                        }
+                    }
+                }
                 if (directionsResponse != null && directionsResponse.routes().size > 0) {
                     val directionsRoute = directionsResponse.routes()[0]
                     if (directionsRoute?.geometry() != null) {
@@ -181,6 +220,22 @@ class TrackingActivity : AppCompatActivity(), OnMapReadyCallback {
             }
 
         })
+    }
+
+    private fun convertMetersToText(dist: Double): String {
+        if (dist.toInt() <= 1000) {
+            var distt: String = dist.toString()
+            return if (distt.indexOf(".") > -1) {
+                distt.substring(0, distt.indexOf(".")) + " mt"
+            } else {
+                "$distt mt"
+            }
+        } else {
+            var distance: Double = (dist / 1000)
+            val  df: DecimalFormat = DecimalFormat("#.#");
+            distance = df.format(distance).toDouble()
+            return "$distance km"
+        }
     }
 
     override fun onMapError(i: Int, s: String) {}

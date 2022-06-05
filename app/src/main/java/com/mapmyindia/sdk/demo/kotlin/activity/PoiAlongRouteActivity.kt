@@ -231,7 +231,10 @@ class PoiAlongRouteActivity: AppCompatActivity(), OnMapReadyCallback, MapmyIndia
 
     private fun addMarker(pois: List<SuggestedPOI>) {
         for (marker in pois) {
-            mapmyIndiaMap.addMarker(MarkerOptions().position(LatLng(marker.latitude, marker.longitude)).title(marker.poi))
+            if(marker.latitude != null){
+                mapmyIndiaMap.addMarker(MarkerOptions().position(LatLng(marker.latitude, marker.longitude)).title(marker.poi))
+            }
+
         }
         poiRecyclerView.adapter = PoiAlongAdapter(pois)
     }

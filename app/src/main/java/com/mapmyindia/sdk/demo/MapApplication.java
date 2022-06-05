@@ -5,6 +5,8 @@ import android.app.Application;
 import com.mapmyindia.sdk.maps.MapmyIndia;
 import com.mmi.services.account.MapmyIndiaAccountManager;
 
+import timber.log.Timber;
+
 /**
  * Created by CEINFO on 29-06-2018.
  */
@@ -15,6 +17,7 @@ public class MapApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
+
         MapmyIndiaAccountManager.getInstance().setRestAPIKey(getRestAPIKey());
         MapmyIndiaAccountManager.getInstance().setMapSDKKey(getMapSDKKey());
         MapmyIndiaAccountManager.getInstance().setAtlasClientId(getAtlasClientId());
@@ -23,19 +26,19 @@ public class MapApplication extends Application {
     }
 
     public String getAtlasClientId() {
-        return "";
+        return "33OkryzDZsIBrQJnqft9IOjW_GDwY3FrVfiUzFqLoXqlN7gXDEBVSwTP3sQ9sEz4pPHfYiwEFFV6UsJzhxlYAUfl8Pta0uwd";
     }
 
     public String getAtlasClientSecret() {
-        return "";
+        return "lrFxI-iSEg-sZephtBLcQJcs923N4BX92EdKGvf5IzPGXgRF_hfExxuscZeZfnqtBAqT7xPmS_sLP4Wl1nzaPCuiN2gb5Xh7Oe7LfdkJhwQ=";
     }
 
     public String getMapSDKKey() {
-        return "";
+        return "68fe2d468768599c9aace3013c9d7beb";
     }
 
     public String getRestAPIKey() {
-        return "";
+        return "68fe2d468768599c9aace3013c9d7beb";
     }
 
 }

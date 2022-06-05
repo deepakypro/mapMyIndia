@@ -5,12 +5,12 @@ plugins {
 }
 
 android {
-    compileSdkVersion 31
+    compileSdkVersion 30
     defaultConfig {
         multiDexEnabled true
         applicationId "com.mapmyindia.sdk.demo"
         minSdkVersion 16
-        targetSdkVersion 31
+        targetSdkVersion 30
         vectorDrawables.useSupportLibrary = true
         versionCode 1
         versionName "1.0"
@@ -29,15 +29,15 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility 1.8
-        targetCompatibility 1.8
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
     }
     buildFeatures {
         dataBinding true
         viewBinding true
     }
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = "11"
     }
 }
 

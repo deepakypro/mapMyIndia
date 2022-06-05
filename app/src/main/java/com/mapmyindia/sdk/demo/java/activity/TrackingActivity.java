@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 
+import com.google.gson.Gson;
 import com.mapmyindia.sdk.demo.R;
 import com.mapmyindia.sdk.demo.databinding.BaseLayoutBinding;
 import com.mapmyindia.sdk.demo.java.plugin.TrackingPlugin;
@@ -149,7 +150,6 @@ public class TrackingActivity extends AppCompatActivity implements OnMapReadyCal
             @Override
             public void onSuccess(DirectionsResponse directionsResponse) {
                 Log.e("TAG", directionsResponse.toJson());
-
                 if (directionsResponse != null && directionsResponse.routes() != null && directionsResponse.routes().size() > 0) {
                     DirectionsRoute directionsRoute = directionsResponse.routes().get(0);
                     if (directionsRoute != null && directionsRoute.geometry() != null) {
@@ -187,6 +187,8 @@ public class TrackingActivity extends AppCompatActivity implements OnMapReadyCal
         MapmyIndiaDirectionManager.newInstance(mapmyIndiaDirections).call(new OnResponseCallback<DirectionsResponse>() {
             @Override
             public void onSuccess(DirectionsResponse directionsResponse) {
+
+
                 if (directionsResponse != null && directionsResponse.routes() != null && directionsResponse.routes().size() > 0) {
                     DirectionsRoute directionsRoute = directionsResponse.routes().get(0);
                     if (directionsRoute != null && directionsRoute.geometry() != null) {

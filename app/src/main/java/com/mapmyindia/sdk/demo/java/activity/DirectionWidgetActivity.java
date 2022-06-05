@@ -1,11 +1,13 @@
 package com.mapmyindia.sdk.demo.java.activity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 
+import com.google.gson.Gson;
 import com.mapmyindia.sdk.demo.R;
 import com.mapmyindia.sdk.demo.databinding.ActivityDirectionWidgetBinding;
 import com.mapmyindia.sdk.demo.java.settings.MapmyIndiaDirectionWidgetSetting;
@@ -18,6 +20,8 @@ import com.mmi.services.api.directions.models.DirectionsResponse;
 
 import java.util.List;
 
+import timber.log.Timber;
+
 public class DirectionWidgetActivity extends AppCompatActivity {
 
     private ActivityDirectionWidgetBinding mBinding;
@@ -29,7 +33,7 @@ public class DirectionWidgetActivity extends AppCompatActivity {
 
         DirectionOptions.Builder optionsBuilder = DirectionOptions.builder();
         if (!MapmyIndiaDirectionWidgetSetting.getInstance().isDefault()){
-
+            Log.d("navigation_list" , "inside");
             PlaceOptions options = PlaceOptions.builder()
                     .zoom(MapmyIndiaDirectionWidgetSetting.getInstance().getZoom())
                     .hint(MapmyIndiaDirectionWidgetSetting.getInstance().getHint())
@@ -49,13 +53,13 @@ public class DirectionWidgetActivity extends AppCompatActivity {
 
             optionsBuilder.searchPlaceOption(options)
                     .showDefaultMap(true)
-                    .showStartNavigation(MapmyIndiaDirectionWidgetSetting.getInstance().isShowStartNavigation())
+                    .showStartNavigation(true)
                     .steps(MapmyIndiaDirectionWidgetSetting.getInstance().isSteps())
                     .resource(MapmyIndiaDirectionWidgetSetting.getInstance().getResource())
                     .profile(MapmyIndiaDirectionWidgetSetting.getInstance().getProfile())
                     .excludes(MapmyIndiaDirectionWidgetSetting.getInstance().getExcludes())
                     .overview(MapmyIndiaDirectionWidgetSetting.getInstance().getOverview())
-            .showAlternative(MapmyIndiaDirectionWidgetSetting.getInstance().isShowAlternative())
+            .showAlternative(true)
             .searchAlongRoute(MapmyIndiaDirectionWidgetSetting.getInstance().isShowPOISearch());
         }
 
@@ -77,6 +81,11 @@ public class DirectionWidgetActivity extends AppCompatActivity {
             @Override
             public void onStartNavigation(DirectionPoint directionPoint, DirectionPoint directionPoint1, List<DirectionPoint> list, DirectionsResponse directionsResponse, int i) {
                 Toast.makeText(DirectionWidgetActivity.this, "On Navigation Start", Toast.LENGTH_SHORT).show();
+
+//                Log.d("navigation_direction", new Gson().toJson(directionPoint));
+//                Log.d("navigation_direction1", new Gson().toJson(directionPoint1));
+//                Log.d("navigation_list" , new Gson().toJson(list));
+//                Log.d("navigation_dr", new Gson().toJson(directionsResponse));
             }
         });
     }
